@@ -79,5 +79,5 @@ public class Common {
     	return Color.magenta;
     }
 
-	
+
 }

@@ -17,12 +17,13 @@ public class Starter {
 
 				
 		//Configuration variables
-		int x = 100, y = 80;
-		int pixelsPerCell = 10;
+		int x = 25, y = 25;
+		int pixelsPerCell = 20;
 		int maxCycles = 100000;
 		
 		//System objects to model the board
 		Board b = new Board(x, y);
+		generate_crossroad(b);
 		Frame f = new Frame();
 		
 		//Initialize frame and board
@@ -76,6 +77,19 @@ public class Starter {
 	
 	}
 	
-	
-
+	public static void generate_crossroad(Board b){
+		for(int i=0;i<b.get_width();i++){
+			for(int j=0;j<b.get_height();j++){
+				b.update(2, i, j);
+				b.update_p(0, i, j);
+			}
+		}
+		for(int i=0;i<b.get_width();i++) b.update(4, i, b.get_height()/2);
+		for(int i=0;i<b.get_width();i++) b.update(4, i, b.get_height()/2 + 1);
+		
+		for(int i=0;i<b.get_height();i++) b.update(4, b.get_width()/2, i);
+		for(int i=0;i<b.get_height();i++) b.update(4, b.get_width()/2 + 1, i);
+	}
 }
+
+

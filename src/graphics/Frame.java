@@ -146,11 +146,11 @@ public class Frame {
         East.add(sp);
         
         //Create panel that paints
-        panelHolder = new PaintPanel(board.get_wide(),board.get_height(), this.cellSize);
-    	panelHolder.setPreferredSize(new Dimension(this.board.get_wide()*cellSize, this.board.get_height()*cellSize));
+        panelHolder = new PaintPanel(board.get_width(),board.get_height(), this.cellSize);
+    	panelHolder.setPreferredSize(new Dimension(this.board.get_width()*cellSize, this.board.get_height()*cellSize));
     	
     	//Set everything to white for the first time
-    	for(int i=0; i<board.get_wide(); i++){
+    	for(int i=0; i<board.get_width(); i++){
     		for(int j=0; j<board.get_height(); j++){
     			panelHolder.colorBackground(i, j, Color.white);
     		}
@@ -180,13 +180,13 @@ public class Frame {
     public void update(){
     	
 
-		for(int i=0; i<board.get_wide(); i++){
+		for(int i=0; i<board.get_width(); i++){
     		for(int j=0; j<board.get_height(); j++){
   
-    			
-    			if(board.get_pos_value(i, j) > 0){
-    				panelHolder.updateColor(i, j, Common.lineColorIdEquivalence(board.get_pos_value(i, j)));
-    				panelHolder.updatePoly(i, j, board.get_pos_value(i, j));
+    			Cell c = board.get_pos_value(i, j); 
+    			if(c != null && c.v > 0){
+    				panelHolder.updateColor(i, j, Common.lineColorIdEquivalence(c.v));
+    				panelHolder.updatePoly(i, j, c.p);
     			}else{
     				panelHolder.updatePoly(i, j, -1);
     			}
@@ -207,7 +207,7 @@ public class Frame {
         //creating and showing this application's GUI.
     	cellSize = sizeOfCell;
     	board = b;
-    	if(board.get_height() != board.get_wide() || board.get_height() % sizeOfCell != 0){
+    	if(board.get_height() != board.get_width() || board.get_height() % sizeOfCell != 0){
     		//throw new RuntimeException("Board dimensiones must be equal and multiples of the cell size");
     	}
         create();
