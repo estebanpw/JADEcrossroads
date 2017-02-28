@@ -68,9 +68,15 @@ public class Starter {
 		Object objs[] = new Object[1];
 		objs[0] = (Object) m;
 		
-		//Create test agent 
+		/*
+		//Create test agent
 		AgentController ag1 = mainContainer.createNewAgent("John", "agents.TestAgent", objs);
 		ag1.start();
+		*/
+		
+		//Create traffic light
+		AgentController ag2 = mainContainer.createNewAgent("TL1", "agents.TrafficLight", objs);
+		ag2.start();
 		
 		//Start thread runner
 		stp.run();
