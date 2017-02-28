@@ -21,6 +21,10 @@ public class Stepper extends Thread{
 		cCycles = 0;
 	}
 	
+	public int get_time(){
+		return this.cCycles;
+	}
+	
 	public void run(){
 		
 		while(cCycles < nCycles){

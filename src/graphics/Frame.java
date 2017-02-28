@@ -114,7 +114,7 @@ public class Frame {
     	cycleLabel = new JLabel("Delta(T): ");
     	delayLabel = new JLabel("Adjust the delay between iterations in milliseconds");
     	infoLabel = new JTextArea(5, 30);
-    	infoLabel.setText("@init");
+    	infoLabel.setText("@0: init");
     	infoLabel.setLineWrap(true);
     	infoLabel.setEditable(false);
     	infoLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -213,8 +213,8 @@ public class Frame {
         create();
     }
     
-    public void setInfoLabel(String s, int year){
-    	infoLabel.append("\n@Year <"+year+">: "+s);
+    public void send_info(String s, int year){
+    	infoLabel.append("\n@"+year+": "+s);
     }
     
     public int getMSDelay(){
