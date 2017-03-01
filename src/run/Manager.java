@@ -1,5 +1,7 @@
 package run;
 
+import java.awt.Point;
+
 import graphics.Board;
 import graphics.Frame;
 
@@ -20,5 +22,9 @@ public class Manager {
 	
 	public void deliver_message(String s){
 		this.f.send_info(s, this.p.get_time());
+	}
+	
+	public void change_traffic_light_state(Point p, int color){
+		b.update(color, p.x, p.y);
 	}
 }

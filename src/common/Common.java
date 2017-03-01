@@ -66,6 +66,8 @@ public class Common {
     	case 2: return Color.green;
     	case 3: return Color.cyan;
     	case 4: return Color.black;
+    	case 5: return Color.gray;
+    	case 6: return Color.red;
     	}
     	return Common.getBgColor();
     }
@@ -75,6 +77,8 @@ public class Common {
     	case 0: return Color.white;
     	case 1: return Color.black;
     	case 2: return Color.green;
+    	case 3: return Color.gray;
+    	case 4: return Color.red;
     	}
     	return Color.magenta;
     }
