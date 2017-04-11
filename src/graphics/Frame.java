@@ -1,7 +1,9 @@
 package graphics;
 
 import java.awt.*;
+
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 
 import common.Common;
  
@@ -114,6 +116,8 @@ public class Frame {
     	cycleLabel = new JLabel("Delta(T): ");
     	delayLabel = new JLabel("Adjust the delay between iterations in milliseconds");
     	infoLabel = new JTextArea(5, 30);
+    	DefaultCaret caret = (DefaultCaret) infoLabel.getCaret();
+    	caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
     	infoLabel.setText("@0: init");
     	infoLabel.setLineWrap(true);
     	infoLabel.setEditable(false);

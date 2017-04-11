@@ -22,7 +22,7 @@ public class Starter {
 		int x = 25, y = 25;
 		int pixelsPerCell = 20;
 		int maxCycles = 100000;
-		int n_traffic_lights = 4;
+		int n_traffic_lights = 1;
 		
 		//Traffic lights will have positions
 		Point []pos_tfs = new Point[n_traffic_lights];
@@ -78,19 +78,14 @@ public class Starter {
 		ag1.start();
 		*/
 		
+		//Consider: The objects array as arguments follow this convention:
+		//@1 Manager, @2 Point position, @3 Init state (1 or 0)
 		//Create traffic light
-		AgentController ag2 = mainContainer.createNewAgent("TL1", "agents.TrafficLight", new Object[]{m, pos_tfs[0], (int) 1});
-		ag2.start();
-		
-		AgentController ag3 = mainContainer.createNewAgent("TL2", "agents.TrafficLight", new Object[]{m, pos_tfs[1], (int) 1});
-		ag3.start();
-		
-		AgentController ag4 = mainContainer.createNewAgent("TL3", "agents.TrafficLight", new Object[]{m, pos_tfs[2], (int) 0});
-		ag4.start();
-		
-		AgentController ag5 = mainContainer.createNewAgent("TL4", "agents.TrafficLight", new Object[]{m, pos_tfs[3], (int) 0});
-		ag5.start();
-		
+		AgentController []tfl_agents = new AgentController[n_traffic_lights];
+		for(int i=0;i<n_traffic_lights;i++){
+			tfl_agents[i] = mainContainer.createNewAgent("TL"+i, "agents.TrafficLight", new Object[]{m, pos_tfs[i], (int) ((i<2) ? 1 : 0)}); // 1 1 0 0
+			tfl_agents[i].start();
+		}
 		//Start thread runner
 		stp.run();
 	
@@ -111,18 +106,25 @@ public class Starter {
 		for(int i=0;i<b.get_height();i++) b.update(4, b.get_width()/2 + 1, i);
 		
 		//Add traffic lights
-		pos_tfs[0] = new Point(b.get_width()/2 - 1, b.get_height()/2 + 1);
-		b.update_p(2, pos_tfs[0].x, pos_tfs[0].y);
+		if(n_traffic_lights > 0){
+			pos_tfs[0] = new Point(b.get_width()/2 - 1, b.get_height()/2 + 2);
+			b.update_p(2, pos_tfs[0].x, pos_tfs[0].y); b.update(2, pos_tfs[0].x, pos_tfs[0].y);
+		}
 		
-		pos_tfs[1] = new Point(b.get_width()/2 + 2, b.get_height()/2);
-		b.update_p(2, pos_tfs[1].x, pos_tfs[1].y);
+		if(n_traffic_lights > 1){
+			pos_tfs[1] = new Point(b.get_width()/2 + 2, b.get_height()/2 - 1);
+			b.update_p(2, pos_tfs[1].x, pos_tfs[1].y); b.update(2, pos_tfs[1].x, pos_tfs[1].y);
+		}
 		
-		pos_tfs[2] = new Point(b.get_width()/2, b.get_height()/2 - 1);
-		b.update_p(2, pos_tfs[2].x, pos_tfs[2].y);
+		if(n_traffic_lights > 2){
+			pos_tfs[2] = new Point(b.get_width()/2 - 1, b.get_height()/2 - 1);
+			b.update_p(2, pos_tfs[2].x, pos_tfs[2].y); b.update(6, pos_tfs[2].x, pos_tfs[2].y);
+		}
 		
-		pos_tfs[3] = new Point(b.get_width()/2 + 1, b.get_height()/2 + 2);
-		b.update_p(2, pos_tfs[3].x, pos_tfs[3].y);
-		
+		if(n_traffic_lights > 3){
+			pos_tfs[3] = new Point(b.get_width()/2 + 2, b.get_height()/2 + 2);
+			b.update_p(2, pos_tfs[3].x, pos_tfs[3].y); b.update(6, pos_tfs[3].x, pos_tfs[3].y);
+		}
 	}
 }
 

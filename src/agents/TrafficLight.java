@@ -45,6 +45,7 @@ public class TrafficLight extends Agent{
 		@Override
 		public void action() {
 			// TODO Auto-generated method stub
+			// Internal ticking
 			if(m.get_system_time() % this.mod == 0 && last != m.get_system_time()){
 				light_state = !light_state;
 				last = m.get_system_time();
@@ -57,6 +58,8 @@ public class TrafficLight extends Agent{
 					m.change_traffic_light_state(this.position, 6);
 				}
 			}
+			// Requesting and sending information
+			
 		}
 	}
 }
