@@ -217,7 +217,7 @@ public class Frame {
         create();
     }
     
-    public void send_info(String s, int year){
+    public synchronized void send_info(String s, int year){
     	infoLabel.append("\n@"+year+": "+s);
     }
     

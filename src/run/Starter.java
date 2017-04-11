@@ -21,23 +21,28 @@ public class Starter {
 		//Configuration variables
 		int x = 25, y = 25;
 		int pixelsPerCell = 20;
-		int maxCycles = 100000;
-		int n_traffic_lights = 1;
+		int maxCycles = 1000;
+		int n_traffic_lights = 4;
+		int n_cars = 1;
 		
 		//Traffic lights will have positions
 		Point []pos_tfs = new Point[n_traffic_lights];
+		Point []pos_cars = new Point[n_cars];
+		Point []car_dirs = new Point[4];
+		car_dirs[0] = new Point(0,1); car_dirs[1] = new Point(0,-1); car_dirs[2] = new Point(1,0); car_dirs[3] = new Point(-1,0);
+		
 		
 		
 		//System objects to model the board
 		Board b = new Board(x, y);
-		generate_crossroad(b, pos_tfs, n_traffic_lights);
+		generate_crossroad(b, pos_tfs, n_traffic_lights, pos_cars, car_dirs, n_cars);
 		Frame f = new Frame();
 		
 		//Initialize frame and board
 		f.start(b, pixelsPerCell);
 		
 		//Create thread to run the system through iterations
-		Stepper stp = new Stepper(b, f, maxCycles);
+		Stepper stp = new Stepper(b, f, maxCycles, n_traffic_lights);
 		
 		//Manager to handle board, frame and stepper at once
 		Manager m = new Manager(f, b, stp);
@@ -81,17 +86,39 @@ public class Starter {
 		//Consider: The objects array as arguments follow this convention:
 		//@1 Manager, @2 Point position, @3 Init state (1 or 0)
 		//Create traffic light
+		String []tfl_aids = new String[n_traffic_lights];
 		AgentController []tfl_agents = new AgentController[n_traffic_lights];
 		for(int i=0;i<n_traffic_lights;i++){
-			tfl_agents[i] = mainContainer.createNewAgent("TL"+i, "agents.TrafficLight", new Object[]{m, pos_tfs[i], (int) ((i<2) ? 1 : 0)}); // 1 1 0 0
+			tfl_agents[i] = mainContainer.createNewAgent("TL"+i, "agents.TrafficLight", new Object[]{m, pos_tfs[i], (int) ((i<2) ? 1 : 0), i, car_dirs[i]}); // 1 1 0 0
+			tfl_aids[i] = "TL"+i;
+			
+		}
+		
+		//Create cars 
+		String []car_aids = new String[n_cars];
+		AgentController []car_agents = new AgentController[n_cars];
+		for(int i=0;i<n_cars;i++){
+			car_agents[i] = mainContainer.createNewAgent("CAR"+i, "agents.Car", new Object[]{m, pos_cars[i], car_dirs[i], i+tfl_agents.length});
+			car_aids[i] = "CAR"+i;
+			
+		}
+		//Pass all agents as reference to the manager
+		m.set_agents(tfl_aids, car_aids);
+		
+		// Start all agents
+		for(int i=0;i<n_traffic_lights;i++){
 			tfl_agents[i].start();
 		}
+		for(int i=0;i<n_cars;i++){
+			car_agents[i].start();
+		}
+		
 		//Start thread runner
 		stp.run();
 	
 	}
 	
-	public static void generate_crossroad(Board b, Point []pos_tfs, int n_traffic_lights){
+	public static void generate_crossroad(Board b, Point []pos_tfs, int n_traffic_lights, Point []pos_cars, Point []car_dirs, int n_cars){
 		for(int i=0;i<b.get_width();i++){
 			for(int j=0;j<b.get_height();j++){
 				b.update(5, i, j);
@@ -124,6 +151,13 @@ public class Starter {
 		if(n_traffic_lights > 3){
 			pos_tfs[3] = new Point(b.get_width()/2 + 2, b.get_height()/2 + 2);
 			b.update_p(2, pos_tfs[3].x, pos_tfs[3].y); b.update(6, pos_tfs[3].x, pos_tfs[3].y);
+		}
+		
+		//Add cars
+		if(n_cars > 0){
+			pos_cars[0] = new Point(b.get_width()/2, 0);
+			b.update_p(1, pos_cars[0].x, pos_cars[0].y); b.update(1, pos_cars[0].x, pos_cars[0].y);
+			car_dirs[0] = new Point(0, 1);
 		}
 	}
 }
