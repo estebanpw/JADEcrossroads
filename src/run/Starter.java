@@ -134,22 +134,22 @@ public class Starter {
 		
 		//Add traffic lights
 		if(n_traffic_lights > 0){
-			pos_tfs[0] = new Point(b.get_width()/2 - 1, b.get_height()/2 + 2);
+			pos_tfs[0] = new Point(b.get_width()/2 - 1, b.get_height()/2 - 1);
 			b.update_p(2, pos_tfs[0].x, pos_tfs[0].y); b.update(2, pos_tfs[0].x, pos_tfs[0].y);
 		}
 		
 		if(n_traffic_lights > 1){
-			pos_tfs[1] = new Point(b.get_width()/2 + 2, b.get_height()/2 - 1);
+			pos_tfs[1] = new Point(b.get_width()/2 + 2, b.get_height()/2 + 2);
 			b.update_p(2, pos_tfs[1].x, pos_tfs[1].y); b.update(2, pos_tfs[1].x, pos_tfs[1].y);
 		}
 		
 		if(n_traffic_lights > 2){
-			pos_tfs[2] = new Point(b.get_width()/2 - 1, b.get_height()/2 - 1);
+			pos_tfs[2] = new Point(b.get_width()/2 - 1, b.get_height()/2 + 2);
 			b.update_p(2, pos_tfs[2].x, pos_tfs[2].y); b.update(6, pos_tfs[2].x, pos_tfs[2].y);
 		}
 		
 		if(n_traffic_lights > 3){
-			pos_tfs[3] = new Point(b.get_width()/2 + 2, b.get_height()/2 + 2);
+			pos_tfs[3] = new Point(b.get_width()/2 + 2, b.get_height()/2 - 1);
 			b.update_p(2, pos_tfs[3].x, pos_tfs[3].y); b.update(6, pos_tfs[3].x, pos_tfs[3].y);
 		}
 		

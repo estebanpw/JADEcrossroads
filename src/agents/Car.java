@@ -29,7 +29,6 @@ public class Car extends Agent{
 	
 	protected void takeDown(){
 		this.m.deliver_message("Car Agent "+getLocalName()+" saying goodbye");
-		
 	}
 		
 	
@@ -77,6 +76,7 @@ public class Car extends Agent{
 					if(response.getContent().equals("GREEN")){
 						this.can_move = true;
 					}else{
+						if(this.position > )
 						this.can_move = false;
 					}
 				}else{

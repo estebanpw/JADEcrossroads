@@ -42,6 +42,20 @@ public class Manager {
 		}
 	}
 	
+	public boolean is_car_beyond_tf (Point position, Point direction){
+		int x = direction.x;
+		int y = direction.y;
+		
+		if(x == 0 && y == 1){
+			if( position.x > (this.b.get_width()/2)-1) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
+	}
+	
 	public synchronized void agent_moved(int ID){
 		this.p.agent_moved(ID);
 	}
