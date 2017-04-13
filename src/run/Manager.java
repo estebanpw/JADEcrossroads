@@ -12,6 +12,7 @@ public class Manager {
 	private Board b;
 	private Stepper p;
 	private String [] TFAgents;
+	private Point [] TFpositions;
 	private String [] cars;
 	private int total_agents;
 	
@@ -20,6 +21,14 @@ public class Manager {
 		this.f = f;
 		this.b = b;
 		this.p = p;
+	}
+	
+	public int get_board_width(){
+		return this.b.get_width();
+	}
+	
+	public int get_board_height(){
+		return this.b.get_height();
 	}
 	
 	public int get_system_time(){
@@ -47,14 +56,18 @@ public class Manager {
 		int y = direction.y;
 		
 		if(x == 0 && y == 1){
-			if( position.x > (this.b.get_width()/2)-1) {
-				return true;
-			} else {
-				return false;
-			}
+			if(position.x > (this.b.get_height()/2)-1) return true; else return false;
+		}else if (x == 0 && y == -1){
+		    if(position.y < (this.b.get_height()/2)+1) return true; else return false;
+		}else if (x == 1 && y == 0) {
+		    if(position.x < (this.b.get_width()/2)+1) return true; else return false;
+		}else if (x == -1 && y == 0){
+			if(position.x > (this.b.get_width()/2)-1) return true; else return false;
 		}
 		
+		return false;
 	}
+	
 	
 	public synchronized void agent_moved(int ID){
 		this.p.agent_moved(ID);
@@ -68,9 +81,15 @@ public class Manager {
 		this.p.restart_moves();
 	}
 	
+	public boolean can_car_move_to(Point to){
+		if(b.get_pos_value(to.x, to.y).p != 1) return true; else return false;
+	}
+	
 	public void move_car(Point from, Point to){
+		
 		b.update(4, from.x, from.y);
 		b.update_p(0, from.x, from.y);
+		
 		b.update(1, to.x, to.y);
 		b.update_p(1, to.x, to.y);
 	}
@@ -78,6 +97,10 @@ public class Manager {
 	public void set_agents(String [] TFL, String [] CARS){
 		this.TFAgents = TFL;
 		this.cars = CARS; 
+	}
+	
+	public void set_positions(Point [] TFlights){
+		this.TFpositions = TFlights;
 	}
 	
 	public String[] get_traffic_lights_AID(){

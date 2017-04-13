@@ -1,5 +1,6 @@
 package agents;
 import java.awt.Point;
+import common.Common;
 
 import run.Manager;
 import jade.core.AID;
@@ -39,7 +40,7 @@ public class Car extends Agent{
 		Point direction;
 		int steps_counter;
 		int last_time;
-		boolean can_move;
+		boolean can_move, someone_before;
 		int ID;
 		
 		public CarBehaviour(Agent a, Manager m, Point pos, Point direction, int ID){
@@ -57,8 +58,16 @@ public class Car extends Agent{
 			// TODO Auto-generated method stub
 			// Internal ticking
 			
+			Point new_pos = new Point(this.position.x + this.direction.x, this.position.y + this.direction.y);
+			if(new_pos.x < 0) new_pos.x = this.m.get_board_width()-1;
+			if(new_pos.y < 0) new_pos.y = this.m.get_board_height()-1;
+			if(new_pos.x == this.m.get_board_width()) new_pos.x = 0;
+			if(new_pos.y == this.m.get_board_height()) new_pos.y = 0;
+			if(this.m.can_car_move_to(new_pos)) someone_before = false; else someone_before = true;
+			
 			// check if car can move
-			if(last_time != this.m.get_system_time()){
+			if(!someone_before && last_time != this.m.get_system_time()){
+				
 				can_move = true;
 				ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
 				// Send direction and ask for light status
@@ -72,12 +81,13 @@ public class Car extends Agent{
 				ACLMessage response = receive();
 				if(response != null){
 					// Only the semaphore that controlls this direction should answer
-					m.deliver_message("CAR "+this.ID+" received message with: "+response.getContent());
-					if(response.getContent().equals("GREEN")){
+					m.deliver_message("CAR "+this.ID+" at "+this.position.x+","+this.position.y+" received message with: "+response.getContent());
+					String []parsed_answer = response.getContent().split(",");
+					if(parsed_answer[0].equals("GREEN")){
 						this.can_move = true;
 					}else{
-						if(this.position > )
-						this.can_move = false;
+						Point semaphore_point = new Point(Integer.parseInt(parsed_answer[1]), Integer.parseInt(parsed_answer[2]));
+						if(1 == Common.manhattanDistance(this.position.x, this.position.y, semaphore_point.x, semaphore_point.y)) this.can_move = false; else this.can_move = true;
 					}
 				}else{
 					block();
@@ -91,7 +101,6 @@ public class Car extends Agent{
 			
 			
 			if(can_move){
-				Point new_pos = new Point(this.position.x + this.direction.x, this.position.y + this.direction.y);
 				this.m.move_car(this.position, new_pos);
 				this.position.x = this.position.x + this.direction.x;
 				this.position.y = this.position.y + this.direction.y;

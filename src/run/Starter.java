@@ -5,7 +5,6 @@ import java.awt.Point;
 import jade.core.*;
 import jade.core.Runtime;
 import jade.wrapper.AgentController;
-import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
 import graphics.Board;
 import graphics.Frame;
@@ -21,9 +20,9 @@ public class Starter {
 		//Configuration variables
 		int x = 25, y = 25;
 		int pixelsPerCell = 20;
-		int maxCycles = 1000;
+		int maxCycles = 1005;
 		int n_traffic_lights = 4;
-		int n_cars = 1;
+		int n_cars = 10;
 		
 		//Traffic lights will have positions
 		Point []pos_tfs = new Point[n_traffic_lights];
@@ -98,12 +97,13 @@ public class Starter {
 		String []car_aids = new String[n_cars];
 		AgentController []car_agents = new AgentController[n_cars];
 		for(int i=0;i<n_cars;i++){
-			car_agents[i] = mainContainer.createNewAgent("CAR"+i, "agents.Car", new Object[]{m, pos_cars[i], car_dirs[i], i+tfl_agents.length});
+			car_agents[i] = mainContainer.createNewAgent("CAR"+i, "agents.Car", new Object[]{m, pos_cars[i], car_dirs[i%4], i+tfl_agents.length});
 			car_aids[i] = "CAR"+i;
 			
 		}
 		//Pass all agents as reference to the manager
 		m.set_agents(tfl_aids, car_aids);
+		m.set_positions(pos_tfs);
 		
 		// Start all agents
 		for(int i=0;i<n_traffic_lights;i++){
@@ -154,11 +154,29 @@ public class Starter {
 		}
 		
 		//Add cars
-		if(n_cars > 0){
-			pos_cars[0] = new Point(b.get_width()/2, 0);
-			b.update_p(1, pos_cars[0].x, pos_cars[0].y); b.update(1, pos_cars[0].x, pos_cars[0].y);
-			car_dirs[0] = new Point(0, 1);
+		int index;
+		int timer;
+		for(int j=0;j<n_cars;j++){
+			index = j % 4;
+			timer = j/n_cars;
+			if(index == 0){
+				pos_cars[j] = new Point(b.get_width()/2, 0+timer);
+				b.update_p(1, pos_cars[j].x, pos_cars[j].y); b.update(j%7, pos_cars[j].x, pos_cars[j].y);
+			}
+			if(index == 1){
+				pos_cars[j] = new Point(b.get_width()/2+1, b.get_height()-1-timer);
+				b.update_p(1, pos_cars[j].x, pos_cars[j].y); b.update(j%7, pos_cars[j].x, pos_cars[j].y);
+			}
+			if(index == 2){
+				pos_cars[j] = new Point(0+timer, b.get_height()/2+1);
+				b.update_p(1, pos_cars[j].x, pos_cars[j].y); b.update(j%7, pos_cars[j].x, pos_cars[j].y);
+			}
+			if(index == 3){
+				pos_cars[j] = new Point(b.get_width()-1-timer, b.get_height()/2);
+				b.update_p(1, pos_cars[j].x, pos_cars[j].y); b.update(j%7, pos_cars[j].x, pos_cars[j].y);
+			}
 		}
+		
 	}
 }
 

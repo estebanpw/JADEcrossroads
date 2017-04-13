@@ -77,7 +77,7 @@ public class TrafficLight extends Agent{
 				if(this.dir.equals(receiving_direction)){
 					ACLMessage response = new ACLMessage(ACLMessage.INFORM);
 					response.addReceiver(msg.getSender());
-					if(light_state) response.setContent("GREEN"); else response.setContent("RED");
+					if(light_state) response.setContent("GREEN,"+this.position.x+","+this.position.y); else response.setContent("RED,"+this.position.x+","+this.position.y);
 					m.deliver_message("TF "+this.ID+" sending response: "+response.getContent());
 					send(response);
 				}

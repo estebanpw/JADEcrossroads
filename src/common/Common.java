@@ -79,6 +79,8 @@ public class Common {
     	case 2: return Color.green;
     	case 3: return Color.gray;
     	case 4: return Color.red;
+    	case 5: return Color.cyan;
+    	case 6: return Color.magenta;
     	}
     	return Color.magenta;
     }
