@@ -73,7 +73,7 @@ public class TrafficLight extends Agent{
 				// If there is a message
 				String[] splitted = msg.getContent().split(",");
 				Point receiving_direction = new Point(Integer.parseInt(splitted[0]), Integer.parseInt(splitted[1]));
-				m.deliver_message("TF "+this.ID+" received message: "+msg.getContent());
+				//m.deliver_message("TF "+this.ID+" received message: "+msg.getContent());
 				if(this.dir.equals(receiving_direction)){
 					ACLMessage response = new ACLMessage(ACLMessage.INFORM);
 					response.addReceiver(msg.getSender());

@@ -129,7 +129,7 @@ public class Frame {
     	sp.setPreferredSize(new Dimension(400,200));
     	
     	//Delay slider
-    	msDelay = new JSlider(JSlider.HORIZONTAL, 5, 1000, 500);
+    	msDelay = new JSlider(JSlider.HORIZONTAL, 400, 2000, 500);
     	msDelay.setMajorTickSpacing(200);
     	msDelay.setMinorTickSpacing(50);
     	msDelay.setPaintTicks(true);
